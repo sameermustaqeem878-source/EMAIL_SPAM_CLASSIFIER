@@ -1,88 +1,140 @@
-```markdown
-# 📧 Smart Spam Filter (`EMAIL_SPAM_CLASSIFIER`)
 
-An end-to-end Machine Learning web application that classifies emails as **Spam** or **Ham (Legitimate)** using **TF-IDF Vectorization** and **Logistic Regression**, complete with an interactive **Gradio** dashboard and persistent mailbox management.
+# Smart Spam Filter
 
-Achieves **98.8% F1-score** and accuracy on held-out test data.
+Smart Spam Filter is a machine learning project that detects whether an email is spam or legitimate (ham). It uses Natural Language Processing (NLP), TF-IDF feature extraction, and Logistic Regression to classify emails.
 
----
+The project also includes a Gradio web interface where users can test emails, view prediction results, and manage their mailbox.
 
-## 🚀 Features
+## Features
 
-* **Robust Data Preprocessing & Cleaning:** Automatically downloads the email spam classification dataset via `kagglehub`, filters out noise, handles contradictory labels, removes short/duplicate texts, and applies Porter stemming using NLTK.
-* **High-Performance ML Models:** Trains and benchmarks both **Multinomial Naive Bayes** and **Logistic Regression**, saving the best-performing model via `joblib`.
-* **Explainable AI (Token-level Signals):** Highlights specific words driving predictions toward spam or ham so users can see *why* an email was flagged.
-* **Interactive Gradio Dashboard:**
-  * **Receive Email Tab:** Test custom emails or load pre-built sample messages to instantly view probability scores and highlighted token signals.
-  * **Mailbox Tab:** Search, filter by folder (`Inbox`, `Spam`, `All`), manually reclassify messages, and manage incoming emails.
-  * **Settings Tab:** Dynamically adjust the classification probability threshold (`0.1` to `0.9`) to make filtering stricter or more lenient.
-* **Persistent Storage:** Automatically saves mailbox state in JSON format (`mailbox.json`).
+- Email classification into Spam and Not Spam.
+- Text cleaning and preprocessing using NLTK.
+- TF-IDF vectorization with unigrams and bigrams.
+- Training and comparison of Naive Bayes and Logistic Regression.
+- Spam probability for each email.
+- Identification of words influencing the prediction.
+- Interactive Gradio web interface.
+- Sample emails for testing.
+- Mailbox with Inbox, Spam, and All folders.
+- Search emails by sender, subject, or message content.
+- Move emails between Inbox and Spam.
+- Delete individual emails or clear the mailbox.
+- Adjustable spam detection threshold.
+- Automatic mailbox storage using JSON.
 
----
+## Model Performance
 
-## 📊 Model Performance
+The models were evaluated using an 80/20 train-test split with stratified sampling.
 
-Evaluated on an independent test split ($N = 16,636$):
+Test set size: 16,636 emails.
 
 | Model | Accuracy | Precision | Recall | F1-Score |
-| :--- | :---: | :---: | :---: | :---: |
+|---|---:|---:|---:|---:|
 | Naive Bayes | 97.51% | 98.70% | 96.52% | 97.60% |
-| **Logistic Regression (Best)** | **98.78%** | **98.59%** | **99.10%** | **98.84%** |
+| Logistic Regression | 98.78% | 98.59% | 99.10% | 98.84% |
 
----
+Logistic Regression performed better and was selected as the final classification model.
 
-## 🛠️ Tech Stack
+## Technologies Used
 
-* **Language:** Python
-* **Data & NLP:** Pandas, NumPy, NLTK (Stopwords & PorterStemmer)
-* **Machine Learning:** Scikit-Learn (`TfidfVectorizer` with `ngram_range=(1, 2)`, `LogisticRegression`, `MultinomialNB`)
-* **Web UI:** Gradio
-* **Storage & Serialization:** Joblib, JSON, KaggleHub
+- Python
+- Pandas
+- NumPy
+- NLTK
+- Scikit-learn
+- Matplotlib
+- Gradio
+- Joblib
+- KaggleHub
+- Google Colab
 
----
-
-## 📦 Repository & Generated Artifacts
+## Project Structure
 
 ```text
 EMAIL_SPAM_CLASSIFIER/
 │
-├── EMAIL_SPAM_CLASSIFIER.ipynb   # Main notebook (preprocessing, training, evaluation & Gradio UI)
-├── README.md                     # Project documentation
+├── EMAIL_SPAM_CLASSIFIER.ipynb
+├── README.md
 │
-└── spam_classifier_project/      # Generated automatically during notebook execution
-    ├── emails.csv                # Raw dataset downloaded from Kaggle
-    ├── emails_clean.csv          # Cleaned dataset
-    ├── emails_processed.csv      # Stemmed text dataset
-    ├── spam_model.joblib         # Best trained model (Logistic Regression)
-    ├── tfidf_vectorizer.joblib   # Fitted TF-IDF vectorizer
-    ├── model_nb.joblib           # Naive Bayes baseline model
-    ├── model_lr.joblib           # Logistic Regression model
-    └── mailbox.json              # Persistent state for Gradio UI
-
+└── spam_classifier_project/
+    │
+    ├── emails.csv
+    ├── emails_clean.csv
+    ├── emails_processed.csv
+    │
+    ├── spam_model.joblib
+    ├── tfidf_vectorizer.joblib
+    ├── model_nb.joblib
+    ├── model_lr.joblib
+    │
+    └── mailbox.json
 ```
 
----
+The `spam_classifier_project` folder and its files are created or saved automatically when the notebook runs.
 
-## 💻 Getting Started & Usage
+## How It Works
 
-1. **Clone the repository** or open `EMAIL_SPAM_CLASSIFIER.ipynb` directly in **Google Colab**:
+1. The dataset is downloaded from Kaggle using KaggleHub.
+2. Unnecessary, duplicate, contradictory, and very short emails are removed.
+3. Email text is cleaned by removing URLs, punctuation, numbers, and stopwords.
+4. Porter Stemming is applied to normalize words.
+5. TF-IDF converts the processed email text into numerical features.
+6. Naive Bayes and Logistic Regression models are trained.
+7. Both models are evaluated using accuracy, precision, recall, and F1-score.
+8. The trained Logistic Regression model is used for email classification.
+9. Gradio provides an interface for testing emails and managing the mailbox.
+
+## Running the Project
+
+This project was developed using Google Colab.
+
+### 1. Clone the Repository
+
 ```bash
-git clone [https://github.com/sameermustaqeem878-source/EMAIL_SPAM_CLASSIFIER.git](https://github.com/sameermustaqeem878-source/EMAIL_SPAM_CLASSIFIER.git)
-
+git clone https://github.com/sameermustaqeem878-source/EMAIL_SPAM_CLASSIFIER.git
 ```
 
+### 2. Open the Notebook
 
-2. **Mount Google Drive** (when running in Google Colab) so datasets, trained models, and `mailbox.json` persist across sessions:
+Open `EMAIL_SPAM_CLASSIFIER.ipynb` in Google Colab.
+
+### 3. Mount Google Drive
+
+Run the notebook and connect your Google Drive when prompted.
+
 ```python
 from google.colab import drive
 drive.mount('/content/drive')
-
 ```
 
+### 4. Run All Cells
 
-3. **Run all cells** sequentially to download the dataset, preprocess text, train and evaluate the models, and launch the interactive Gradio web interface.
-4. **Test the Filter:** Open the generated Gradio link to compose test emails, load sample messages, inspect word-level spam signals, and experiment with threshold tuning.
+Execute the notebook cells in order. The notebook handles dataset downloading, preprocessing, model training, evaluation, and saving the trained models.
 
-```[cite: 1, 2]
+### 5. Launch the Application
 
-```
+Run the final cell to launch the Gradio interface.
+
+Open the generated Gradio link to access the application.
+
+## Application
+
+The Gradio interface contains three main sections:
+
+### Receive Email
+
+Enter the sender, subject, and email message to check whether it is spam or legitimate. The application displays the prediction, spam probability, and words influencing the classification.
+
+### Mailbox
+
+View received emails in Inbox, Spam, or All folders. Search messages, read selected emails, move them between folders, or delete them.
+
+### Settings
+
+Adjust the spam probability threshold between 0.1 and 0.9. The mailbox is automatically updated based on the selected threshold, except for emails manually moved between folders.
+
+## Author
+
+Muhammad Sameer Mustaqeem
+
+GitHub: https://github.com/sameermustaqeem878-source
